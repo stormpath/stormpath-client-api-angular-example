@@ -2,6 +2,9 @@
 
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { StormpathModule, Stormpath } from 'angular-stormpath';
+import { BaseRequestOptions, Http, ConnectionBackend } from '@angular/http';
+import { MockBackend } from '@angular/http/testing';
 
 describe('AppComponent', () => {
   beforeEach(() => {
@@ -9,6 +12,18 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      imports: [StormpathModule],
+      providers: [
+        {
+          provide: Http, useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => {
+          return new Http(backend, defaultOptions);
+        },
+          deps: [MockBackend, BaseRequestOptions]
+        },
+        {provide: Stormpath, useClass: Stormpath},
+        {provide: MockBackend, useClass: MockBackend},
+        {provide: BaseRequestOptions, useClass: BaseRequestOptions}
+      ]
     });
     TestBed.compileComponents();
   });
