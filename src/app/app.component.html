@@ -1,3 +1,12 @@
-<h1>
-  {{title}}
-</h1>
+<h1>{{title}}</h1>
+<sp-authport></sp-authport>
+
+<div *ngIf="(user$ | async)">
+  <h2>
+    Welcome, {{ ( user$ | async ).fullName }}
+  </h2>
+  <a href="#" (click)="logout(); false">Logout</a>
+</div>
+<div [hidden]="!(user$ | async)">
+  <!-- secure components or <router-outlet></router-outlet> -->
+</div>
